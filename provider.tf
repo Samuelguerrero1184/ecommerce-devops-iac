@@ -7,3 +7,9 @@ terraform {
   }
 
 }
+
+#Configure the GitHub Provider
+provider "github" {
+    token = "token"
+}
+ 
