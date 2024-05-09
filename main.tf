@@ -16,7 +16,6 @@ resource "azurerm_api_management" "apigateway" {
 
   sku_name = "Developer_1"
 }
-
 resource "azurerm_virtual_network" "avn" {
   name                = "Red-ecommerce"
   address_space       = ["10.0.0.0/16"]
@@ -48,7 +47,6 @@ resource "azurerm_public_ip" "ecommerce-ip" {
   allocation_method   = "Static"
 
 }
-
 resource "azurerm_network_security_group" "adminGroup" {
   name                = "adminGroup"
   location            = var.location
@@ -66,7 +64,6 @@ resource "azurerm_network_security_group" "adminGroup" {
     destination_address_prefix = "*"
   }
 }
-
 resource "azurerm_network_security_group" "storeGroup" {
   name                = "storeGroup"
   location            = var.location
@@ -98,33 +95,6 @@ resource "azurerm_network_interface" "storeInterface" {
     public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
   }
 }
-/*
-resource "azurerm_network_interface" "adminInterface" {
-  name                = "adminInterface"
-  location            = var.location
-  resource_group_name = var.resource_group
-
-  ip_configuration {
-    name                          = "${var.resource_group}-ani"
-    subnet_id                     = azurerm_subnet.admin.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
-  }
-}
-
-resource "azurerm_network_interface" "firewallInterface" {
-  name                = "firewallInterface"
-  location            = var.location
-  resource_group_name = var.resource_group
-
-  ip_configuration {
-    name                          = "${var.resource_group}-firewallInterface"
-    subnet_id                     = azurerm_subnet.subnetfirewall.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
-  }
-}
-*/
 
 resource "azurerm_network_interface_security_group_association" "storeAsociation" {
   network_interface_id      = azurerm_network_interface.storeInterface.id
@@ -137,27 +107,6 @@ resource "azurerm_network_interface_security_group_association" "adminAsociation
   network_security_group_id = azurerm_network_security_group.adminGroup.id
 }
 */
-resource "azurerm_kubernetes_cluster" "clusterStore" {
-  name                = "Store-Cluster"
-  location            = azurerm_resource_group.ecommerce.location
-  resource_group_name = azurerm_resource_group.ecommerce.name
-  dns_prefix          = "exampleaks1"
-
-  default_node_pool {
-    name       = "default"
-    node_count = 1
-    vm_size    = "Standard_D2_v2"
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  tags = {
-    Environment = "Production"
-  }
-}
-
 resource "azurerm_role_assignment" "ClusterRegistryConection" {
   principal_id                     = azurerm_kubernetes_cluster.clusterStore.kubelet_identity[0].object_id
   role_definition_name             = "AcrPull"
@@ -165,50 +114,28 @@ resource "azurerm_role_assignment" "ClusterRegistryConection" {
   skip_service_principal_aad_check = true
 }
 
-output "client_certificate-Store" {
-  value     = azurerm_kubernetes_cluster.clusterStore.kube_config[0].client_certificate
-  sensitive = true
+
+
+module "aks_cluster"{
+  source                 = "./modules/aks_cluster"
+  cluster_name           = "ecommerceCluster"
+  resource_group_name    = azurerm_resource_group.ecommerce.name
+  resource_group_location = azurerm_resource_group.ecommerce.location
+  dns_prefix             = "ecommerce"
+  node_pool_name         = "ecommerceNodePool"
+  vm_size                = "Standard_DS1_v2"
+  identity_type          = "SystemAssigned"
+  environment            = "Production"
 }
 
-output "kube_config-Store" {
-  value = azurerm_kubernetes_cluster.clusterStore.kube_config_raw
-
-  sensitive = true
+module "container_registry"{
+  source                 = "./modules/container_registry"
+  container_name         = "ecommerceContainerRegistry"
+  resource_group         = azurerm_resource_group.ecommerce.name
+  resource_group_location = azurerm_resource_group.ecommerce.location
+  sku                    = "Premium"
 }
 
-/*
-resource "azurerm_kubernetes_cluster" "clusterAdmin" {
-  name                = "Store-Cluster"
-  location            = azurerm_resource_group.ecommerce.location
-  resource_group_name = azurerm_resource_group.ecommerce.name
-  dns_prefix          = "exampleaks1"
-
-  default_node_pool {
-    name       = "default"
-    node_count = 1
-    vm_size    = "Standard_D2_v2"
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  tags = {
-    Environment = "Production"
-  }
-}
-
-output "client_certificate-Admin" {
-  value     = azurerm_kubernetes_cluster.clusterAdmin.kube_config[0].client_certificate
-  sensitive = true
-}
-
-output "kube_config-Admin" {
-  value = azurerm_kubernetes_cluster.clusterAdmin.kube_config_raw
-
-  sensitive = true
-}
-*/
 module "vm" {
   prefix           = "prueba"
   source           = "./modules/vm"
@@ -219,3 +146,5 @@ module "vm" {
   password         = var.password
   networkInterface = [azurerm_network_interface.storeInterface.id]
 }
+
+
