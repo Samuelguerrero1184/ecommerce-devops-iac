@@ -98,7 +98,7 @@ resource "azurerm_network_interface" "storeInterface" {
     public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
   }
 }
-
+/*
 resource "azurerm_network_interface" "adminInterface" {
   name                = "adminInterface"
   location            = var.location
@@ -111,6 +111,7 @@ resource "azurerm_network_interface" "adminInterface" {
     public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
   }
 }
+
 resource "azurerm_network_interface" "firewallInterface" {
   name                = "firewallInterface"
   location            = var.location
@@ -123,18 +124,19 @@ resource "azurerm_network_interface" "firewallInterface" {
     public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
   }
 }
-
+*/
 
 resource "azurerm_network_interface_security_group_association" "storeAsociation" {
   network_interface_id      = azurerm_network_interface.storeInterface.id
   network_security_group_id = azurerm_network_security_group.storeGroup.id
 }
 
+/*
 resource "azurerm_network_interface_security_group_association" "adminAsociation" {
   network_interface_id      = azurerm_network_interface.adminInterface.id
   network_security_group_id = azurerm_network_security_group.adminGroup.id
 }
-
+*/
 resource "azurerm_kubernetes_cluster" "clusterStore" {
   name                = "Store-Cluster"
   location            = azurerm_resource_group.ecommerce.location
@@ -156,6 +158,13 @@ resource "azurerm_kubernetes_cluster" "clusterStore" {
   }
 }
 
+resource "azurerm_role_assignment" "ClusterRegistryConection" {
+  principal_id                     = azurerm_kubernetes_cluster.clusterStore.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.containerRegistryEcommerce.id
+  skip_service_principal_aad_check = true
+}
+
 output "client_certificate-Store" {
   value     = azurerm_kubernetes_cluster.clusterStore.kube_config[0].client_certificate
   sensitive = true
@@ -167,6 +176,7 @@ output "kube_config-Store" {
   sensitive = true
 }
 
+/*
 resource "azurerm_kubernetes_cluster" "clusterAdmin" {
   name                = "Store-Cluster"
   location            = azurerm_resource_group.ecommerce.location
@@ -198,7 +208,7 @@ output "kube_config-Admin" {
 
   sensitive = true
 }
-
+*/
 module "vm" {
   prefix           = "prueba"
   source           = "./modules/vm"
@@ -207,5 +217,5 @@ module "vm" {
   location         = azurerm_resource_group.ecommerce.location
   user             = var.user
   password         = var.password
-  networkInterface = [azurerm_network_interface.firewallInterface.id]
+  networkInterface = [azurerm_network_interface.storeInterface.id]
 }
