@@ -7,15 +7,7 @@ resource "azurerm_resource_group" "ecommerce" {
   name     = var.resource_group
   location = var.location
 }
-resource "azurerm_api_management" "apigateway" {
-  name                = "apigateway-ecommerce"
-  location            = azurerm_resource_group.ecommerce.location
-  resource_group_name = azurerm_resource_group.ecommerce.name
-  publisher_name      = "Tecno Solucionesn't"
-  publisher_email     = "company@terraform.io"
 
-  sku_name = "Developer_1"
-}
 resource "azurerm_virtual_network" "avn" {
   name                = "Red-ecommerce"
   address_space       = ["10.0.0.0/16"]
@@ -81,8 +73,6 @@ resource "azurerm_network_security_group" "storeGroup" {
     destination_address_prefix = "*"
   }
 }
-
-
 resource "azurerm_network_interface" "storeInterface" {
   name                = "storeInterface"
   location            = var.location
@@ -101,12 +91,6 @@ resource "azurerm_network_interface_security_group_association" "storeAsociation
   network_security_group_id = azurerm_network_security_group.storeGroup.id
 }
 
-/*
-resource "azurerm_network_interface_security_group_association" "adminAsociation" {
-  network_interface_id      = azurerm_network_interface.adminInterface.id
-  network_security_group_id = azurerm_network_security_group.adminGroup.id
-}
-*/
 resource "azurerm_role_assignment" "ClusterRegistryConection" {
   principal_id                     = azurerm_kubernetes_cluster.clusterStore.kubelet_identity[0].object_id
   role_definition_name             = "AcrPull"
@@ -114,7 +98,15 @@ resource "azurerm_role_assignment" "ClusterRegistryConection" {
   skip_service_principal_aad_check = true
 }
 
-
+module "apigateway" {
+  source            = "./modules/api_gateway"
+  apigateway_name   = "ecommerceApiGateway"
+  resource_group    = azurerm_resource_group.ecommerce.name
+  resource_group_location = azurerm_resource_group.ecommerce.location
+  publisher_name    = "TecnoSolucionesNOT"
+  publisher_email   = "tecnosolucionesNOT@gmail.com"
+  sku_name = "Hola"
+}
 
 module "aks_cluster"{
   source                 = "./modules/aks_cluster"
