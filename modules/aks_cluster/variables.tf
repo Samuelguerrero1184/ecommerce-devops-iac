@@ -11,6 +11,7 @@ variable "dns_prefix" {
     description = "DNS prefix for the cluster"
 }
 variable "node_pool_name" {
+    type = string
     description = "Name for the node pool"
 }
 variable "vm_size" {
