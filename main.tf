@@ -12,7 +12,7 @@ module "network" {
   source                 = "./modules/networking"
   resource_group_name    = azurerm_resource_group.ecommerce.name
   location               = azurerm_resource_group.ecommerce.location
-  network_name           = "Ecommerce_Network"
+  network_name           = "Ecommerce_Network-Grupo1"
   network_interface_name = "Ecommerce_Network_Interface"
 }
 
@@ -81,6 +81,6 @@ module "bastion_host" {
   bastion_host_name       = "ecommerceBastionHost"
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
-  subnet_id               = module.network.subnet_id
-  public_ip_address_id    = module.network.network_public_id
+  subnet_id               = module.network.bastion_subnet_id
+  public_ip_address_id    = module.network.bastion_public_id
 }
