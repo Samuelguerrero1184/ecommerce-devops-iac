@@ -40,15 +40,15 @@ module "aks_cluster" {
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
   dns_prefix              = "ecommerce"
-  node_pool_name          = "nodepool"
-  vm_size                 = "Standard_DS1_v2"
+  node_pool_name          = "default"
+  vm_size                 = "Standard_D2_v2"
   identity_type           = "SystemAssigned"
   environment             = "Production"
 }
 
 module "container_registry" {
   source                  = "./modules/container_registry"
-  container_name          = "ecommerceContainerRegistry"
+  container_name          = "containerRegistryGrupo1"
   resource_group          = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
   sku                     = "Premium"
