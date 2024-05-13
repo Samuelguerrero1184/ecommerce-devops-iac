@@ -30,6 +30,7 @@ metadata:
   labels:
     app: ecommerce
 spec:
+  type: LoadBalancer  # Specifies that this service should be exposed externally using a load balancer
   selector:
     app: ecommerce
   ports:
