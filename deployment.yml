@@ -30,7 +30,7 @@ metadata:
   labels:
     app: ecommerce
 spec:
-  type: LoadBalancer  # Specifies that this service should be exposed externally using a load balancer
+  type: LoadBalancer
   selector:
     app: ecommerce
   ports:
@@ -42,3 +42,21 @@ spec:
     port: 81
     targetPort: 3001
     name: ecommerce-store
+
+#
+#apiVersion: v1
+#kind: Service
+#metadata:
+ # name: ecommerce
+  #labels:
+   # app: ecommerce
+#spec:
+#  type: LoadBalancer
+#  loadBalancerIP: 168.62.183.199
+#  selector:
+#    app: ecommerce
+#  ports:
+#  - protocol: TCP
+#    port: 80
+#    targetPort: 3000 # Port where your application is listening
+#*/
