@@ -1,4 +1,4 @@
-resource "azurerm_virtual_network" "avn" {
+resource "azurerm_virtual_network" "avn-ecommerceG1" {
   name                = var.network_name
   address_space       = ["10.0.0.0/16"]
   location            = var.location
@@ -35,7 +35,7 @@ resource "azurerm_public_ip" "bastion-ip" {
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"  # or "Dynamic" depending on your needs
- 
+  sku                 = "Standard"
 }
 
 resource "azurerm_network_interface" "storeInterface" {
