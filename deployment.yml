@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
       - name: ecommece-admin
-        image: containerRegistryGrupo1.azurecr.io/images/ecommerce-admin:0.0.1
+        image: containerRegistryGrupo1.azurecr.io/images/ecommerce-admin:0.0.2
         ports:
         - containerPort: 3000
       - name: ecommerce-store
-        image: containerRegistryGrupo1.azurecr.io/images/ecommerce-store:0.0.1
+        image: containerRegistryGrupo1.azurecr.io/images/ecommerce-store:0.0.2
         ports:
         - containerPort: 3001
 
