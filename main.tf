@@ -76,6 +76,7 @@ resource "azurerm_role_assignment" "ClusterRegistryConection" {
   scope                            = module.container_registry.container_registry_id
   skip_service_principal_aad_check = true
 }
+/*
 module "bastion_host" {
   source                  = "./modules/bastion_host"
   bastion_host_name       = "ecommerceBastionHost"
@@ -84,3 +85,4 @@ module "bastion_host" {
   subnet_id               = module.network.bastion_subnet_id
   public_ip_address_id    = module.network.bastion_public_id
 }
+*/

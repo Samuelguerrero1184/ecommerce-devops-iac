@@ -10,12 +10,15 @@ resource "azurerm_subnet" "store" {
   virtual_network_name = var.network_name
   address_prefixes     = ["10.0.2.0/24"]
 }
+### Bastion
+/*
 resource "azurerm_subnet" "bastionSubnet" {
   name                 = "AzureBastionSubnet"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network_name
   address_prefixes     = ["10.0.3.0/24"]
 }
+*/
 resource "azurerm_subnet" "subnetfirewall" {
   name                 = "${var.resource_group_name}-subnetfirewall"
   resource_group_name  = var.resource_group_name
@@ -30,6 +33,7 @@ resource "azurerm_public_ip" "ecommerce-ip" {
   #sku                 = "Standard"  # Ensure it's set to Standard
 }
 
+/*
 resource "azurerm_public_ip" "bastion-ip" {
   name                = "bastion-public-ip"
   location            = var.location
@@ -37,7 +41,7 @@ resource "azurerm_public_ip" "bastion-ip" {
   allocation_method   = "Static"  # or "Dynamic" depending on your needs
   sku                 = "Standard"
 }
-
+*/
 resource "azurerm_network_interface" "storeInterface" {
   name                = var.network_interface_name
   location            = var.location

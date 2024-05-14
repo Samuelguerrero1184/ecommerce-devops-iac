@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: ecommerce
 spec:
+  #type: LoadBalancer
   replicas: 2
   selector:
     matchLabels:
@@ -26,22 +27,40 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ecommerce
-  labels:
-    app: ecommerce
+  name: ecommerce-loadbalancer
 spec:
   type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000 # Port where your application is listening
   selector:
     app: ecommerce
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommece-admin
+spec:
+  type: ClusterIP
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
-    name: ecommece-admin
-  - protocol: TCP
-    port: 81
-    targetPort: 3001
-    name: ecommerce-store
+  - port: 3000
+  selector:
+    app: ecommerce
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-store
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3001
+  selector:
+    app: ecommerce
+
+
 
 #
 #apiVersion: v1
