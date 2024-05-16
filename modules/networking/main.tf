@@ -19,8 +19,8 @@ resource "azurerm_subnet" "bastionSubnet" {
   address_prefixes     = ["10.0.3.0/24"]
 }
 */
-resource "azurerm_subnet" "subnetfirewall" {
-  name                 = "${var.resource_group_name}-subnetfirewall"
+resource "azurerm_subnet" "subnetApiGateway" {
+  name                 = "${var.resource_group_name}-api-gateway-subnet"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network_name
   address_prefixes     = ["10.0.4.0/24"]
@@ -30,7 +30,7 @@ resource "azurerm_public_ip" "ecommerce-ip" {
   resource_group_name = var.resource_group_name
   location            = var.location
   allocation_method   = "Static"
-  #sku                 = "Standard"  # Ensure it's set to Standard
+  sku                 = "Standard"  # Ensure it's set to Standard
 }
 
 /*

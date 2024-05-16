@@ -15,15 +15,15 @@ spec:
     spec:
       containers:
       - name: ecommece-admin
-        image: containerRegistryGrupo1.azurecr.io/images/ecommerce-admin:0.0.2
+        image: containerregistrygrupo1.azurecr.io/images/ecommerce-admin:0.0.2
         ports:
         - containerPort: 3000
       - name: ecommerce-store
-        image: containerRegistryGrupo1.azurecr.io/images/ecommerce-store:0.0.2
+        image: containerregistrygrupo1.azurecr.io/images/ecommerce-store:0.0.2
         ports:
         - containerPort: 3001
 
----
+
 #apiVersion: v1
 #kind: Service
 #metadata:
@@ -40,13 +40,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ecommece-admin-service
+  name: ecommerce-admin-service
 spec:
-  type: ClusterIP
-  ports:
-  - port: 3000
   selector:
     app: ecommerce
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000  # Assuming your ecommerce-admin container listens on port 3000
+
 
 ---
 apiVersion: v1
@@ -60,22 +62,32 @@ spec:
   selector:
     app: ecommerce
 
+---
 
-
-#
 #apiVersion: v1
 #kind: Service
 #metadata:
- # name: ecommerce
-  #labels:
-   # app: ecommerce
+#  name: ecommerce-admin-lb-service
 #spec:
-#  type: LoadBalancer
-#  loadBalancerIP: 168.62.183.199
 #  selector:
 #    app: ecommerce
+    # Add additional labels if needed to target the specific container
+    # For example: container: ecommerce-admin
 #  ports:
-#  - protocol: TCP
-#    port: 80
-#    targetPort: 3000 # Port where your application is listening
-#*/
+#    - protocol: TCP
+#      port: 80
+#      targetPort: 3000  # Assuming your ecommerce-admin container listens on port 3000
+#  type: LoadBalancer
+#  loadBalancerIP: 48.216.137.10 # Specify the existing IP address here
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-lb-service
+spec:
+  selector:
+    app: ecommerce-ingress
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer

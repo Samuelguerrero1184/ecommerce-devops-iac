@@ -29,9 +29,16 @@ module "apigateway" {
   apigateway_name         = "ecommerceApiGateway"
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
-  publisher_name          = "TecnoSolucionesNOT"
-  publisher_email         = "tecnosolucionesNOT@gmail.com"
-  sku_name                = "Developer_1"
+  sku_name                = "Standard_v2"
+  sku_tier                = "Standard_v2"
+  subnet_id               = module.network.subnetApiGateway_id
+  frontend_port_name      = "ecommerceFrontendPort"
+  frontend_ip_configuration_name = "ecommerceFrontendIPConfiguration"
+  backend_address_pool_name = "ecommerceBackendAddressPool"
+  http_setting_name = "ecommerceHttpSetting"
+  listener_name = "ecommerceListener"
+  request_routing_rule_name = "ecommerceRequestRoutingRule"
+  public_ip_address_id = module.network.network_public_id
 }
 
 module "aks_cluster" {
@@ -53,7 +60,7 @@ module "container_registry" {
   resource_group_location = azurerm_resource_group.ecommerce.location
   sku                     = "Premium"
 }
-
+/*
 module "vm" {
   prefix           = "prueba"
   source           = "./modules/vm"
@@ -69,7 +76,7 @@ resource "azurerm_network_interface_security_group_association" "storeAsociation
   network_interface_id      = module.network.network_interface_id
   network_security_group_id = module.security_group.security_group_id
 }
-
+*/
 resource "azurerm_role_assignment" "ClusterRegistryConection" {
   principal_id                     = module.aks_cluster.kubelet_identity
   role_definition_name             = "AcrPull"

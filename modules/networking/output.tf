@@ -15,6 +15,9 @@ output "network_interface_id" {
 output "network_public_id"{
   value = azurerm_public_ip.ecommerce-ip.id  
 }
+output "subnetApiGateway_id"{
+    value = azurerm_subnet.subnetApiGateway.id
+}
 /*
 output "bastion_public_id"{
   value = azurerm_public_ip.bastion-ip.id
