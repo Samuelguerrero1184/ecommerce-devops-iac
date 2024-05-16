@@ -51,6 +51,5 @@ resource "azurerm_network_interface" "storeInterface" {
     name                          = "${var.resource_group_name}-ani"
     subnet_id                     = azurerm_subnet.store.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
   }
 }
