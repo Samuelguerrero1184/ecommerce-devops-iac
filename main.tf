@@ -12,21 +12,20 @@ module "network" {
   source                 = "./modules/networking"
   resource_group_name    = azurerm_resource_group.ecommerce.name
   location               = azurerm_resource_group.ecommerce.location
-  network_name           = "Ecommerce_Network-Grupo1"
-  network_interface_name = "Ecommerce_Network_Interface"
+  network_name           = var.network_name
+  network_interface_name = var.network_interface_name
 }
 
 module "security_group" {
   source                  = "./modules/security_group"
-  security_group_name     = "ecommerceSecurityGroup"
+  security_group_name     = var.security_group_name
   resource_group_location = azurerm_resource_group.ecommerce.location
   resource_group_name     = azurerm_resource_group.ecommerce.name
-
 }
 
 module "apigateway" {
   source                  = "./modules/api_gateway"
-  apigateway_name         = "ecommerceApiGateway"
+  apigateway_name         = var.apigateway_name
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
   sku_name                = "Standard_v2"
@@ -39,30 +38,33 @@ module "apigateway" {
   listener_name = "ecommerceListener"
   request_routing_rule_name = "ecommerceRequestRoutingRule"
   public_ip_address_id = module.network.network_public_id
+  publisher_name          = var.publisher_name
+  publisher_email         = var.publisher_email
+  sku_name                = var.sku_name
 }
 
 module "aks_cluster" {
   source                  = "./modules/aks_cluster"
-  cluster_name            = "ecommerceCluster"
+  cluster_name            = var.cluster_name
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
-  dns_prefix              = "ecommerce"
-  node_pool_name          = "default"
-  vm_size                 = "Standard_D2_v2"
-  identity_type           = "SystemAssigned"
-  environment             = "Production"
+  dns_prefix              = var.dns_prefix
+  node_pool_name          = var.node_pool_name
+  vm_size                 = var.vm_size
+  identity_type           = var.identity_type
+  environment             = var.environment
 }
 
 module "container_registry" {
   source                  = "./modules/container_registry"
-  container_name          = "containerRegistryGrupo1"
+  container_name          = var.container_name
   resource_group          = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
-  sku                     = "Premium"
+  sku                     = var.sku
 }
 /*
 module "vm" {
-  prefix           = "prueba"
+  prefix           = var.prefix
   source           = "./modules/vm"
   subnet-id        = module.network.subnet_id
   resource_group   = azurerm_resource_group.ecommerce.name
@@ -86,7 +88,7 @@ resource "azurerm_role_assignment" "ClusterRegistryConection" {
 /*
 module "bastion_host" {
   source                  = "./modules/bastion_host"
-  bastion_host_name       = "ecommerceBastionHost"
+  bastion_host_name       = var.bastion_host_name
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
   subnet_id               = module.network.bastion_subnet_id
