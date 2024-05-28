@@ -28,6 +28,16 @@ module "apigateway" {
   apigateway_name         = var.apigateway_name
   resource_group_name     = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
+  sku_name                = "Standard_v2"
+  sku_tier                = "Standard_v2"
+  subnet_id               = module.network.subnetApiGateway_id
+  frontend_port_name      = "ecommerceFrontendPort"
+  frontend_ip_configuration_name = "ecommerceFrontendIPConfiguration"
+  backend_address_pool_name = "ecommerceBackendAddressPool"
+  http_setting_name = "ecommerceHttpSetting"
+  listener_name = "ecommerceListener"
+  request_routing_rule_name = "ecommerceRequestRoutingRule"
+  public_ip_address_id = module.network.network_public_id
   publisher_name          = var.publisher_name
   publisher_email         = var.publisher_email
   sku_name                = var.sku_name
@@ -52,7 +62,7 @@ module "container_registry" {
   resource_group_location = azurerm_resource_group.ecommerce.location
   sku                     = var.sku
 }
-
+/*
 module "vm" {
   prefix           = var.prefix
   source           = "./modules/vm"
@@ -68,13 +78,14 @@ resource "azurerm_network_interface_security_group_association" "storeAsociation
   network_interface_id      = module.network.network_interface_id
   network_security_group_id = module.security_group.security_group_id
 }
-
+*/
 resource "azurerm_role_assignment" "ClusterRegistryConection" {
   principal_id                     = module.aks_cluster.kubelet_identity
   role_definition_name             = "AcrPull"
   scope                            = module.container_registry.container_registry_id
   skip_service_principal_aad_check = true
 }
+/*
 module "bastion_host" {
   source                  = "./modules/bastion_host"
   bastion_host_name       = var.bastion_host_name
@@ -83,3 +94,4 @@ module "bastion_host" {
   subnet_id               = module.network.bastion_subnet_id
   public_ip_address_id    = module.network.bastion_public_id
 }
+*/

@@ -1,0 +1,50 @@
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+  #name: ecommerce-ingress
+#spec:
+  #ingressClassName: ecommerceCluster.kubernetes.azure.com
+  #rules:
+  #- host: 168.62.183.199.nip.io
+  #  http:
+  #    paths:
+   #   - backend:
+    #      service:
+     #       name: ecommece-admin-service
+      #      port:
+       #       number: 3000
+        #path: /admin
+        #pathType: Prefix
+      #- backend:
+       #   service:
+        #    name: ecommerce-store-service
+        #    port:
+        #      number: 3001
+        #path: /
+        #pathType: Prefix
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: 168.62.183.199.nip.io
+      http:
+        paths:
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommece-admin-service
+                port:
+                  number: 3000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ecommerce-store-service
+                port:
+                  number: 3001
