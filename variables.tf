@@ -122,3 +122,8 @@ variable "bastion_host_name" {
   description = "The name of the Bastion Host"
   type        = string
 }
+
+variable "aks_ingress_application_gateway" {
+  description = "The name of the Ingress Application Gateway"
+  type        = string
+}

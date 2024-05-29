@@ -31,6 +31,8 @@ module "apigateway" {
   publisher_name          = var.publisher_name
   publisher_email         = var.publisher_email
   sku_name                = var.sku_name
+  subnet_id               = module.network.subnet_id
+  network_public_ip       = module.network.network_public_id
 }
 
 module "aks_cluster" {
@@ -43,6 +45,8 @@ module "aks_cluster" {
   vm_size                 = var.vm_size
   identity_type           = var.identity_type
   environment             = var.environment
+  aks_ingress_application_gateway = var.aks_ingress_application_gateway
+  subnet_cidr = module.network.store_network_cidr
 }
 
 module "container_registry" {

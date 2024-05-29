@@ -23,3 +23,9 @@ variable "identity_type" {
 variable "environment" {
     description = "Environment"
 }
+variable "aks_ingress_application_gateway" {
+    description = "Ingress Application Gateway"
+}
+variable "subnet_cidr" {
+    description = "Subnet CIDR"
+}

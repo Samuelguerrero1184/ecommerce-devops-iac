@@ -16,3 +16,9 @@ variable "publisher_email" {
 variable "sku_name" {
     description = "SKU name"
 }
+variable "subnet_id"{
+    description = "Subnet ID"
+}
+variable "network_public_ip"{
+    description = "Public IP for the network"
+}

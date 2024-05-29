@@ -16,3 +16,7 @@ output "network_public_id"{
 output "bastion_public_id"{
   value = azurerm_public_ip.bastion-ip.id
 }
+output "store_network_cidr" {
+  value       = azurerm_subnet.store.address_prefixes
+  description = "description"
+}

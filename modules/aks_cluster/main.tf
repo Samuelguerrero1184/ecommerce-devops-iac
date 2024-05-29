@@ -18,7 +18,15 @@ resource "azurerm_kubernetes_cluster" "clusterStore" {
   tags = {
     Environment = var.environment
   }
+  private_cluster_enabled = true
+
 }
+resource "local_file" "kubeconfig" {
+  depends_on = [azurerm_kubernetes_cluster.clusterStore]
+  filename   = "aksconfig"
+  content    = azurerm_kubernetes_cluster.clusterStore.kube_config_raw
+}
+
 output "client_certificate-Store" {
   value     = azurerm_kubernetes_cluster.clusterStore.kube_config[0].client_certificate
   sensitive = true
