@@ -3,7 +3,7 @@ output "subnet_id" {
   description = "description"
 }
 output "bastion_subnet_id" {
-    value = azurerm_subnet.bastionSubnet.id
+    value = azurerm_subnet.ApigatewaySubnet.id
     description = "description"
 }
 output "network_interface_id" {
@@ -13,8 +13,8 @@ output "network_interface_id" {
 output "network_public_id"{
   value = azurerm_public_ip.ecommerce-ip.id  
 }
-output "bastion_public_id"{
-  value = azurerm_public_ip.bastion-ip.id
+output "apigateway-ip_public_id"{
+  value = azurerm_public_ip.apigateway-ip.id
 }
 output "store_network_cidr" {
   value       = azurerm_subnet.store.address_prefixes

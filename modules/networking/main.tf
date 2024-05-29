@@ -9,9 +9,10 @@ resource "azurerm_subnet" "store" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network_name
   address_prefixes     = ["10.0.2.0/24"]
+
 }
-resource "azurerm_subnet" "bastionSubnet" {
-  name                 = "AzureBastionSubnet"
+resource "azurerm_subnet" "ApigatewaySubnet" {
+  name                 = "ApigatewaySubnet"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.network_name
   address_prefixes     = ["10.0.3.0/24"]
@@ -27,11 +28,11 @@ resource "azurerm_public_ip" "ecommerce-ip" {
   resource_group_name = var.resource_group_name
   location            = var.location
   allocation_method   = "Static"
-  #sku                 = "Standard"  # Ensure it's set to Standard
+  sku                 = "Standard"  # Ensure it's set to Standard
 }
 
-resource "azurerm_public_ip" "bastion-ip" {
-  name                = "bastion-public-ip"
+resource "azurerm_public_ip" "apigateway-ip" {
+  name                = "apigateway-ip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"  # or "Dynamic" depending on your needs
