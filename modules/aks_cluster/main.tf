@@ -18,6 +18,11 @@ resource "azurerm_kubernetes_cluster" "clusterStore" {
   tags = {
     Environment = var.environment
   }
+
+  key_vault_secrets_provider {
+    # update the secrets on a regular basis
+    secret_rotation_enabled = var.secret_rotation_enabled
+  }
   private_cluster_enabled = true
 
 }
