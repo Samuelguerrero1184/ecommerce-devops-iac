@@ -29,3 +29,6 @@ variable "aks_ingress_application_gateway" {
 variable "subnet_cidr" {
     description = "Subnet CIDR"
 }
+variable "secret_rotation_enabled"{
+    description = "Secret rotation enabled"
+}

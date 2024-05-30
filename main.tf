@@ -35,6 +35,41 @@ module "apigateway" {
   network_public_ip       = module.network.apigateway-ip_public_id
 }
 
+module "identity" {
+  source              = "./modules/identity"
+  name                = "myUserAssignedIdentity_Ecommerce"
+  resource_group_name = azurerm_resource_group.ecommerce.name
+  location            = azurerm_resource_group.ecommerce.location
+}
+
+module "secret_key_vault"{
+
+  source                      = "./modules/secret_key_vault"
+  key_vault_name              = "myKeyVault-109988"
+  resource_group_name         = var.resource_group
+  location                    = azurerm_resource_group.ecommerce.location
+  enabled_for_disk_encryption = true
+  purge_protection_enabled    = false
+  soft_delete_retention_days  = 7
+  sku_name                    = "standard"
+  key_permissions             = ["Get", "Create", "List", "Delete", "Purge", "Recover", "SetRotationPolicy", "GetRotationPolicy"]
+  secret_permissions          = ["Get", "Set", "List", "Delete", "Purge", "Recover"]
+  certificate_permissions     = ["Get"]
+  secret_names                = ["mySecret1", "mySecret2", "webserver-config", "webserver-properties"]
+  secret_values               = ["szechuan", "shashlik", "config-value", "properties-value"]
+  key_names                   = ["myKey1", "myKey2"]
+  key_types                   = ["RSA", "RSA"]
+  key_sizes                   = [2048, 2048]
+  key_opts                    = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+  time_before_expiry          = "P30D"
+  expire_after                = "P90D"
+  notify_before_expiry        = "P29D"
+  user_assigned_identity_principal_id = module.identity.principal_id
+  aks_secret_provider_id      = module.aks_cluster.aks_secret_provider
+
+
+}
+
 module "aks_cluster" {
   source                          = "./modules/aks_cluster"
   cluster_name                    = var.cluster_name
@@ -47,6 +82,7 @@ module "aks_cluster" {
   environment                     = var.environment
   aks_ingress_application_gateway = var.aks_ingress_application_gateway
   subnet_cidr                     = module.network.store_network_cidr
+  secret_rotation_enabled         = true
 }
 
 module "container_registry" {
