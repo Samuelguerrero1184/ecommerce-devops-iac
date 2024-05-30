@@ -2,7 +2,7 @@ output "subnet_id" {
   value       = azurerm_subnet.store.id
   description = "description"
 }
-output "bastion_subnet_id" {
+output "apigatewaysubnet_id" {
     value = azurerm_subnet.ApigatewaySubnet.id
     description = "description"
 }

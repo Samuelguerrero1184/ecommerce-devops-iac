@@ -7,20 +7,20 @@ resource "azurerm_virtual_network" "avn-ecommerceG1" {
 resource "azurerm_subnet" "store" {
   name                 = "storeSubNet"
   resource_group_name  = var.resource_group_name
-  virtual_network_name = var.network_name
+  virtual_network_name = azurerm_virtual_network.avn-ecommerceG1.name
   address_prefixes     = ["10.0.2.0/24"]
 
 }
 resource "azurerm_subnet" "ApigatewaySubnet" {
   name                 = "ApigatewaySubnet"
   resource_group_name  = var.resource_group_name
-  virtual_network_name = var.network_name
+  virtual_network_name = azurerm_virtual_network.avn-ecommerceG1.name
   address_prefixes     = ["10.0.3.0/24"]
 }
 resource "azurerm_subnet" "subnetfirewall" {
   name                 = "${var.resource_group_name}-subnetfirewall"
   resource_group_name  = var.resource_group_name
-  virtual_network_name = var.network_name
+  virtual_network_name = azurerm_virtual_network.avn-ecommerceG1.name
   address_prefixes     = ["10.0.4.0/24"]
 }
 resource "azurerm_public_ip" "ecommerce-ip" {

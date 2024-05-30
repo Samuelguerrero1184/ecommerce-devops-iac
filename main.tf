@@ -31,7 +31,7 @@ module "apigateway" {
   publisher_name          = var.publisher_name
   publisher_email         = var.publisher_email
   sku_name                = var.sku_name
-  subnet_id               = module.network.subnet_id
+  subnet_id               = module.network.apigatewaysubnet_id
   network_public_ip       = module.network.apigateway-ip_public_id
 }
 
