@@ -23,7 +23,7 @@ resource "azurerm_kubernetes_cluster" "clusterStore" {
     # update the secrets on a regular basis
     secret_rotation_enabled = var.secret_rotation_enabled
   }
-  private_cluster_enabled = true
+  #private_cluster_enabled = true
 
 }
 resource "local_file" "kubeconfig" {
