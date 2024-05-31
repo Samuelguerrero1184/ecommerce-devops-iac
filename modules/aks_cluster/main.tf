@@ -31,14 +31,3 @@ resource "local_file" "kubeconfig" {
   filename   = "aksconfig"
   content    = azurerm_kubernetes_cluster.clusterStore.kube_config_raw
 }
-
-output "client_certificate-Store" {
-  value     = azurerm_kubernetes_cluster.clusterStore.kube_config[0].client_certificate
-  sensitive = true
-}
-
-output "kube_config-Store" {
-  value = azurerm_kubernetes_cluster.clusterStore.kube_config_raw
-
-  sensitive = true
-}
