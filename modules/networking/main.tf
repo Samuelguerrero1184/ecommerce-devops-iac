@@ -23,16 +23,17 @@ resource "azurerm_subnet" "subnetfirewall" {
   virtual_network_name = azurerm_virtual_network.avn-ecommerceG1.name
   address_prefixes     = ["10.0.4.0/24"]
 }
+
 resource "azurerm_public_ip" "ecommerce-ip" {
-  name                = "${var.resource_group_name}-ecommerce-ecommerce-ip"
+  name                = "store-ip"
   resource_group_name = var.resource_group_name
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"  # Ensure it's set to Standard
 }
 
-resource "azurerm_public_ip" "apigateway-ip" {
-  name                = "apigateway-ip"
+resource "azurerm_public_ip" "admin-ip" {
+  name                = "admin-ip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"  # or "Dynamic" depending on your needs
@@ -48,6 +49,6 @@ resource "azurerm_network_interface" "storeInterface" {
     name                          = "${var.resource_group_name}-ani"
     subnet_id                     = azurerm_subnet.store.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
+    #public_ip_address_id          = azurerm_public_ip.ecommerce-ip.id
   }
 }

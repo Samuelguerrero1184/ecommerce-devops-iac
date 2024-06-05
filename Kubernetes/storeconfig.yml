@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storeconfig
+data:
+  NEXT_PUBLIC_API_URL: http://admin-store:3000/api/c43c23e0-ac29-404d-9c4a-eb5257f472ef
+  
