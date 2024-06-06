@@ -116,6 +116,13 @@ resource "azurerm_role_assignment" "ClusterRegistryConection" {
   scope                            = module.container_registry.container_registry_id
   skip_service_principal_aad_check = true
 }
+resource "azurerm_role_assignment" "ClusterRegistryPushConnection" {
+  principal_id                     = module.aks_cluster.kubelet_identity
+  role_definition_name             = "AcrPush"
+  scope                            = module.container_registry.container_registry_id
+  skip_service_principal_aad_check = true
+}
+
 /*
 module "bastion_host" {
   source                  = "./modules/bastion_host"
