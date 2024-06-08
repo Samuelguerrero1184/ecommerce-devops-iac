@@ -90,7 +90,7 @@ module "container_registry" {
   container_name          = var.container_name
   resource_group          = azurerm_resource_group.ecommerce.name
   resource_group_location = azurerm_resource_group.ecommerce.location
-  sku                     = "Premium"
+  sku                     = "Standard"
 }
 /*
 module "vm" {

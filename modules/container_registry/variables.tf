@@ -13,3 +13,8 @@ variable "resource_group_location" {
 variable "sku" {
   description = "The SKU name of the Azure Container Registry."
 }
+
+variable "admin_enabled" {
+  description = "Boolean flag to enable or disable admin credentials for the Azure Container Registry."
+  default     = true
+}

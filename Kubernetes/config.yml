@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: ecommerce-admin-config
 data:
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: sk_test_aKb0WPNNxnsdyUz40xv5O67FNg2s0MLoVhQwusZyq8
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: csk_test_aKb0WPNNxnsdyUz40xv5O67FNg2s0MLoVhQwusZyq8
   NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: tekb6fg9
