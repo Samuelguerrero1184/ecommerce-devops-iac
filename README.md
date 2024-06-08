@@ -10,6 +10,8 @@ The platform uses Kubernetes for orchestration, providing high availability and 
 - **Kubernetes Deployment**: Leverages AKS for deploying containerized e-commerce applications.
 - **Terraform Infrastructure**: Infrastructure as code using Terraform to provision all required resources on Azure.
 - **CI/CD Pipelines**: GitHub Actions for continuous integration and deployment workflows.
+- **Secure Secret Management**: Utilizes Azure Key Vault to securely store and access secrets such as database passwords and API keys.
+
 
 ## Prerequisites
 - Azure account
